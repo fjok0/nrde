@@ -54,41 +54,39 @@ cd C:\POCKETBASE
 pocketbase.exe serve --http=0.0.0.0:8090
 ```
 
-### 2. Crear (o reutilizar) un superusuario
+### 2. Hacer pública la colección "hechos" (una sola vez)
 
-El script de importación necesita autenticarse como superusuario de
-PocketBase para poder borrar/recrear registros (la app móvil solo necesita
-lectura pública, no requiere login).
+Igual que la colección `dias` de MICORSE, `hechos` no usa login: la
+seguridad la da tu red WiFi doméstica, no PocketBase. Hay que abrir sus
+reglas de acceso a mano una vez, porque por defecto una colección nueva
+solo admite escritura de superusuarios:
 
-- Abre `http://localhost:8090/_/` en el navegador del PC.
-- Si ya tienes un superusuario (el que creaste para MICORSE), puedes
-  reutilizarlo, o crear uno nuevo dedicado en *Settings > Admins/Superusers*.
+1. Abre `http://localhost:8090/_/` y entra con tu superusuario (el mismo
+   que ya usas para MICORSE).
+2. En el menú lateral, **Collections → hechos**.
+3. Pestaña **API Rules** (arriba del listado de campos).
+4. Para las 5 reglas (List/Search, View, Create, Update, Delete): haz clic
+   en el candado de cada una para desbloquearla y deja el campo vacío
+   (equivale a "cualquiera").
+5. **Save**.
 
-### 3. Configurar el script de importación
+### 3. Instalar dependencias del script (una sola vez)
 
 ```bash
 cd C:\TODO\TODO_INFORMATICA\PROYECTOS\NRDE\scripts
-copy config.example.json config.local.json
-```
-
-Edita `config.local.json` con la URL de PocketBase y el email/contraseña del
-superusuario. Este archivo está en `.gitignore`, nunca se sube al repo.
-
-Instala las dependencias del script (solo una vez):
-
-```bash
 npm install
 ```
 
 ### 4. Importar el Excel
 
-Puedes ejecutarlo manualmente:
-
 ```bash
 node importar-excel.js
 ```
 
-O usar el acceso directo en el escritorio: **`NRDE_Importar.bat`**. El
+Si tu PocketBase no corre en `http://127.0.0.1:8090`, pásale la URL como
+argumento: `node importar-excel.js http://192.168.1.x:8090`.
+
+O usa el acceso directo en el escritorio: **`NRDE_Importar.bat`**. El
 `.bat` es solo un lanzador fino — la lógica real vive en
 `scripts/importar-excel.js`, así que puedes copiar esas mismas líneas en
 otro `.bat` que ya uses para lanzar tus apps.
@@ -138,7 +136,5 @@ NRDE/
 │   └── lib/dexie.min.js
 ├── assets/                    <- logo + iconos PWA
 └── scripts/
-    ├── importar-excel.js      <- Excel -> PocketBase (full replace)
-    ├── config.example.json
-    └── config.local.json      <- tus credenciales (no se sube al repo)
+    └── importar-excel.js      <- Excel -> PocketBase (full replace, sin login)
 ```
