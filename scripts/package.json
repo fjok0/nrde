@@ -1,0 +1,16 @@
+{
+  "name": "nrde-scripts",
+  "version": "1.0.0",
+  "description": "Importador Excel -> PocketBase para NRDE",
+  "main": "importar-excel.js",
+  "scripts": {
+    "importar": "node importar-excel.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

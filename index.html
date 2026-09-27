@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>NRDE</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="./assets/logo.svg" alt="NRDE" class="header-icon">
+      <span class="header-titulo">NRDE</span>
+    </div>
+    <button class="header-sync" id="sync-estado" title="Estado sincronización" aria-label="Configurar sincronización">
+      <span class="sync-dot" id="sync-dot"></span>
+    </button>
+  </header>
+
+  <!-- MAIN: CALENDARIO -->
+  <main class="app-main" id="app-main">
+
+    <div class="mes-nav">
+      <button class="btn-mes-nav" id="btn-mes-ant" aria-label="Mes anterior">&#8249;</button>
+      <h2 class="mes-titulo" id="mes-titulo">—</h2>
+      <button class="btn-mes-nav" id="btn-mes-sig" aria-label="Mes siguiente">&#8250;</button>
+    </div>
+
+    <p class="aviso-vacio oculto" id="aviso-vacio"></p>
+
+    <div class="dow-row" id="dow-row"><!-- generado por JS --></div>
+
+    <div class="calendario-grid" id="calendario-grid" role="grid">
+      <!-- generado por JS -->
+    </div>
+
+  </main>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="btn-accion btn-hoy" id="btn-hoy">Hoy</button>
+    <button class="btn-accion btn-principal" id="btn-actualizar">Actualizar</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PANTALLA DETALLE DEL DIA
+  ════════════════════════════════════════════════ -->
+  <div id="pantalla-dia" class="pantalla-dia oculto">
+    <div class="dia-header">
+      <button class="btn-volver" id="btn-volver-dia" aria-label="Volver al calendario">&#8249; Volver</button>
+      <h2 class="dia-header-titulo" id="dia-header-titulo">—</h2>
+    </div>
+    <div class="dia-detalle-lista" id="dia-detalle-lista">
+      <!-- generado por JS -->
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       MODAL SYNC CONFIG
+  ════════════════════════════════════════════════ -->
+  <div id="modal-sync" class="modal oculto" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-cierra-modal></div>
+    <div class="modal-contenido">
+      <button class="modal-cerrar" data-cierra-modal aria-label="Cerrar">&times;</button>
+      <h2 class="modal-titulo">Sincronización WiFi</h2>
+      <p class="sync-info">
+        Introduce la URL del PC de casa donde corre PocketBase.<br>
+        Ejemplo: <code>http://192.168.1.100:8090</code>
+      </p>
+      <div class="form-grupo">
+        <label class="form-label" for="sync-url">URL del servidor</label>
+        <input type="url" id="sync-url" class="form-input"
+               placeholder="http://192.168.1.x:8090">
+      </div>
+      <div class="form-acciones">
+        <button type="button" class="btn-form btn-guardar" id="btn-guardar-sync">
+          Guardar y probar
+        </button>
+      </div>
+      <p class="sync-resultado oculto" id="sync-resultado"></p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast oculto" role="status" aria-live="polite"></div>
+
+  <!-- SCRIPTS — orden importante -->
+  <script src="./js/lib/dexie.min.js"></script>
+  <script src="./js/db.js"></script>
+  <script src="./js/ui-comunes.js"></script>
+  <script src="./js/ui-calendario.js"></script>
+  <script src="./js/ui-dia.js"></script>
+  <script src="./js/app.js"></script>
+
+  <script>
+    // Cabecera de dias de la semana (generada aqui para no duplicar el array en el HTML)
+    document.addEventListener("DOMContentLoaded", function () {
+      var dow = document.getElementById("dow-row");
+      ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"].forEach(function (d) {
+        var span = document.createElement("span");
+        span.className = "dow-cell";
+        span.textContent = d;
+        dow.appendChild(span);
+      });
+    });
+  </script>
+
+</body>
+</html>

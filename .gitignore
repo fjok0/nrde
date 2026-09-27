@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+*.log
+
+# El Excel es la fuente de datos personal, no se publica en el repo
+NRDE.xlsx
+
+# Dependencias e instalables del script de importacion
+scripts/node_modules/
+scripts/config.local.json
